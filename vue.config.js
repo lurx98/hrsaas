@@ -32,6 +32,16 @@ module.exports = {
     overlay: { // 冲突如何处理
       warnings: false,
       errors: true
+    },
+    proxy:{
+      // 前端代码中   /api/box  ==> http://www.baiud.com/api/box
+      '/api':{
+        target:'http://ihrm.itheima.net/',  // 要跨域访问的地址
+        changeOrigin:true, // 是否换源，要为true
+        // pathRewrite:{   // 路径是否重写
+        //   '^/api': ''  //  /api/box  ==> http://www.baiud.com/box
+        // }
+      }
     }
     // 在运行之前，加载mock服务器内容
     // before: require('./mock/mock-server.js')
