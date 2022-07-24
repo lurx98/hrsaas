@@ -2,6 +2,28 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
+// 引入多个模块的规则
+import approvalsRouter from './modules/approvals'
+import departmentsRouter from './modules/departments'
+import employeesRouter from './modules/employees'
+import permissionsRouter from './modules/permissions'
+import attendancesRouter from './modules/attendances'
+import salarysRouter from './modules/salarys'
+import settingsRouter from './modules/settings'
+import socialsRouter from './modules/socials'
+
+// 动态路由
+export const asyncRoutes = [
+  approvalsRouter,
+  departmentsRouter,
+  employeesRouter,
+  permissionsRouter,
+  attendancesRouter,
+  salarysRouter,
+  settingsRouter,
+  socialsRouter
+]
+
 /* Layout */
 // 导入布局组件
 import Layout from '@/layout'
@@ -10,18 +32,18 @@ import Layout from '@/layout'
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
+ * hidden: true                   如果设置为TRUE，则不显示在系统侧边栏菜单  【重要】
+ * alwaysShow: true               如果设置为TRUE，则会一直显示在菜单一级
  *                                if not set alwaysShow, when item has more than one children route,
  *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * redirect: noRedirect           重定向地址  【重要】
+ * name:'router-name'             路由的名称  【重要】
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    roles: ['admin','editor']    角色控制信息
+    title: 'title'               菜单的文字  【重要】
+    icon: 'svg-name'/'el-icon-x' 菜单的图标  【重要】
+    breadcrumb: false            如果设置为false，则不会显示在面包屑导航中
+    activeMenu: '/example/list'  如果设置，则菜单将一直会有高亮
   }
  */
 
@@ -62,7 +84,7 @@ export const constantRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: [...constantRoutes,...asyncRoutes]
 })
 // 获取到路由实例
 const router = createRouter()

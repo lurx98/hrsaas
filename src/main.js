@@ -19,6 +19,46 @@ import router from './router'
 import '@/icons' // icon
 // 导入导航权限守卫
 import '@/permission' // permission control
+/* 
+Vue.directive('指令名',{
+  inserted(el,binding){
+    el是指令所在的节点
+    binding 是指令的包含信息
+  }
+})
+<标签 v-指令名="变量或表达式" />
+
+ */
+// 自定义指令：自己开发的用于操作DOM的指令
+// v-html/text/bind/on/if/for/...
+// vue指令的作用：操作DOM
+// Vue.directive('imgerror',{
+//   inserted(el,binding){
+//     // el就是img节点，img有error事件，图片出错的时候
+//     el.onerror = function(){
+//       console.log("图片出错了");
+//       el.src = binding.value
+//     }
+//   }
+// })
+// 读取某个模块里面所有暴露信息
+import * as directive from '@/directive'
+// console.log(directive);  // 对象
+// // -------------------------
+// let obj = { name:222,age:20 }
+// // Object.keys(对象)  获取对象所有的键，并且组合成数组
+// console.log(Object.keys(obj));
+// Object.keys(obj).forEach(key=>{
+//   console.log('属性名是:'+key,'属性值是:'+ obj[key] );
+// })
+// --------批量注册自定义指令-----------------
+Object.keys(directive).forEach(key=>{
+  // Vue.directive(指令名,指令的配置对象)
+  // 指令名就是 key   指令的配置对象就是  directive[key]
+  // console.log(key, directive[key]);  
+  Vue.directive(key,directive[key])
+})
+
 
 // 给element-ui设置英文语言包
 Vue.use(ElementUI, { locale })

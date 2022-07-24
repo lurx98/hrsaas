@@ -13,8 +13,11 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
-          <span class="name">管理员</span>
+          <!-- <img src="@/assets/common/bigUserHeader.png" alt="" />
+          <img :src="defaultImg" alt="" /> -->
+          <!-- <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar" /> -->
+          <img v-imgerror="defaultImg2" :src="staffPhoto" class="user-avatar" />
+          <span class="name">{{ username }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -37,21 +40,27 @@
 import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
-
 export default {
   components: {
     Breadcrumb,
     Hamburger,
   },
+  data() {
+    return {
+      // defaultImg:"http://yun.itheima.com/Upload/Images/20220722/62da600e97fcf.jpg",
+      defaultImg: "@/assets/common/bigUserHeader.png",
+      defaultImg2: require("@/assets/common/bigUserHeader.png"),
+    };
+  },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(["sidebar", "avatar", "username", "staffPhoto"]),
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },
-    async logout() {
-      await this.$store.dispatch("user/logout");
+    logout() {
+      this.$store.dispatch("user/quit");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
   },
