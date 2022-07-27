@@ -115,3 +115,36 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+
+
+/**
+ * 递归整理出树形结构数据
+ * @param {Array} list  要处理的数据
+ * @param {sting | number} rootValue  顶级的id值
+ * @returns  {Array}   返回的结果
+ */
+export function tranListToTreeData  (list,rootValue){
+  const arr = []
+  // 遍历数组每个元素，问是否有人pid为 rootValue(即0)
+  list.forEach(item=>{
+    if(item.pid === rootValue){
+      // 找到之后，再问 item下面有没有人为子节点呢
+      const children =  tranListToTreeData(list,item.id)
+      if(children.length) item.children = children
+      arr.push(item)
+    }
+  })
+  return arr   // 最终要返回一个数组，只不过是树形结构的
+}
+const list = [{id:4,pid:2},{id:6,pid:3},{id:5,pid:2},{id:3,pid:1},{id:2,pid:1},{id:1,pid:0}]
+console.log(tranListToTreeData(list,0));
+// const list = [{id:4,pid:2},{id:6,pid:3},{id:5,pid:2},{id:3,pid:1},{id:2,pid:1},{id:1,pid:0}]
+/*
+tranListToTreeData(list,0)
+// [{id:1,pid:0,children:[...]}]
+children = tranListToTreeData(list,1)  得到 [{id:3,pid:1,children:children1},{id:2,pid:1,children:children2}]
+//                                          tranListToTreeData(list,3)     tranListToTreeData(list,2)
+                                            children1 = [{id:6,pid:3}]     children2 = [{id:4,pid:2},{id:5,pid:2}]
+
+*/

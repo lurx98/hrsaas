@@ -19,6 +19,7 @@ import router from './router'
 import '@/icons' // icon
 // 导入导航权限守卫
 import '@/permission' // permission control
+import '@/utils' // permission control
 /* 
 Vue.directive('指令名',{
   inserted(el,binding){
