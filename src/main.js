@@ -20,6 +20,9 @@ import '@/icons' // icon
 // 导入导航权限守卫
 import '@/permission' // permission control
 import '@/utils' // permission control
+// import '@/components'
+import Components from  '@/components'
+Vue.use(Components)
 /* 
 Vue.directive('指令名',{
   inserted(el,binding){
@@ -59,8 +62,15 @@ Object.keys(directive).forEach(key=>{
   // console.log(key, directive[key]);  
   Vue.directive(key,directive[key])
 })
-
-
+// --------批量注册全局过滤器-----------------
+// 读取所有的暴露函数
+import * as filters  from '@/filters'
+// 批量注册过滤器
+Object.keys(filters).forEach(key=>{
+  // Vue.filter(过滤器名,函数)
+  Vue.filter(key,filters[key])
+})
+// -----------------------------------------
 // 给element-ui设置英文语言包
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

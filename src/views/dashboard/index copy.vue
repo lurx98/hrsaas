@@ -10,19 +10,16 @@
     <!-- on-preview  预览图片，会出现放大镜，且点击就执行钩子 -->
     <!-- on-change  选择文件、上传成功或失败执行 -->
     <!-- before-upload  上传前执行，返回false或Promise且reject则取消上传 -->
-    <!-- http-request  覆盖默认的上传行为，自己实现上传，就可以使用项目中的请求的axios实例 -->
-    <h1>111111111111</h1>
     <el-upload
       list-type="picture-card"
-      action="#"
-      :auto-upload="true"
+      action="http://192.168.19.78:8060/admin/common/upload?type=images"
+      name="file"
+      :headers="{ 'x-token': token }"
+      :on-success="onSuccess"
       :on-remove="onRemove"
       :on-preview="onPreview"
       :on-change="onChange"
       :before-upload="beforeUpload"
-      :http-request="httpRequest"
-      :file-list="fileList"
-      :class="{ hidden: fileList.length === 3 }"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -36,41 +33,22 @@
 // http://192.168.19.78:8060/admin/common/upload?type=images
 // x-token  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaW5mbyI6eyJpZCI6IjEiLCJsb2dpbl9uYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6Ijk2ZTc5MjE4OTY1ZWI3MmM5MmE1NDlkZDVhMzMwMTEyIiwibmFtZSI6IlRoaW5rSlPkuIDlk6UiLCJlbWFpbCI6Imhld3UxMTIyQDE2My5jb20iLCJwaG9uZSI6IjE3MzQyMDY1OTA5IiwibG9naW5faXAiOiI6OjEiLCJsb2dpbl9kYXRlIjoiMjAxOC0wMS0wOCAxNjoyMjo1MSIsImNyZWF0ZV9kYXRlIjoiMjAxNy0xMi0xNCAxMTo1Mjo0NiIsInVwZGF0ZV9kYXRlIjoiMjAyMS0wOS0wOCAxOTo0MzowMyIsImRlbF9mbGFnIjoiMCIsInJvbGVfaWQiOlsiMWM1NGUwMDNjMWZjNGRjZDliMDg3ZWY4ZDQ4YWJhYzMiXSwic3RhdHVzIjoxLCJkZWZhdWx0X2RhdGEiOiIxIiwicm9sZW5hbWUiOlsi6LaF57qn566h55CG5ZGYIl19LCJpYXQiOjE2NTk0MDk4NTF9.BkVxx8x3V6B51Td2qY3WVMzxnbSCdboTBg3_Aoj9q5w
 // 字段：file  请求方式 post
-import axios from "axios";
-const uploadImage = (data) => {
-  return axios({
-    url: "http://192.168.19.78:8060/admin/common/uplo1ad?type=images",
-    method: "post",
-    data,
-    headers: {
-      "x-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaW5mbyI6eyJpZCI6IjEiLCJsb2dpbl9uYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6Ijk2ZTc5MjE4OTY1ZWI3MmM5MmE1NDlkZDVhMzMwMTEyIiwibmFtZSI6IlRoaW5rSlPkuIDlk6UiLCJlbWFpbCI6Imhld3UxMTIyQDE2My5jb20iLCJwaG9uZSI6IjE3MzQyMDY1OTA5IiwibG9naW5faXAiOiI6OjEiLCJsb2dpbl9kYXRlIjoiMjAxOC0wMS0wOCAxNjoyMjo1MSIsImNyZWF0ZV9kYXRlIjoiMjAxNy0xMi0xNCAxMTo1Mjo0NiIsInVwZGF0ZV9kYXRlIjoiMjAyMS0wOS0wOCAxOTo0MzowMyIsImRlbF9mbGFnIjoiMCIsInJvbGVfaWQiOlsiMWM1NGUwMDNjMWZjNGRjZDliMDg3ZWY4ZDQ4YWJhYzMiXSwic3RhdHVzIjoxLCJkZWZhdWx0X2RhdGEiOiIxIiwicm9sZW5hbWUiOlsi6LaF57qn566h55CG5ZGYIl19LCJpYXQiOjE2NTk0MjI0OTR9.GeZrT0YLCZ5zCCeB8M058i0Zs7UVjEOhUGzMJjzo150",
-    },
-  });
-};
 export default {
   name: "Dashboard",
   data() {
     return {
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaW5mbyI6eyJpZCI6IjEiLCJsb2dpbl9uYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6Ijk2ZTc5MjE4OTY1ZWI3MmM5MmE1NDlkZDVhMzMwMTEyIiwibmFtZSI6IlRoaW5rSlPkuIDlk6UiLCJlbWFpbCI6Imhld3UxMTIyQDE2My5jb20iLCJwaG9uZSI6IjE3MzQyMDY1OTA5IiwibG9naW5faXAiOiI6OjEiLCJsb2dpbl9kYXRlIjoiMjAxOC0wMS0wOCAxNjoyMjo1MSIsImNyZWF0ZV9kYXRlIjoiMjAxNy0xMi0xNCAxMTo1Mjo0NiIsInVwZGF0ZV9kYXRlIjoiMjAyMS0wOS0wOCAxOTo0MzowMyIsImRlbF9mbGFnIjoiMCIsInJvbGVfaWQiOlsiMWM1NGUwMDNjMWZjNGRjZDliMDg3ZWY4ZDQ4YWJhYzMiXSwic3RhdHVzIjoxLCJkZWZhdWx0X2RhdGEiOiIxIiwicm9sZW5hbWUiOlsi6LaF57qn566h55CG5ZGYIl19LCJpYXQiOjE2NTk0MDk4NTF9.BkVxx8x3V6B51Td2qY3WVMzxnbSCdboTBg3_Aoj9q5w",
       imgUrl: "",
       showDialog: false,
-      fileList: [
-        {
-          name: "aaa.jpg",
-          url: "http://yun.itheima.com/Upload/Images/20220722/62da600e97fcf.jpg",
-        },
-        {
-          name: "bbb.jpg",
-          url: "https://www.itheima.com/2020gw/images/indeximg/mapui.png",
-        },
-      ],
     };
   },
   methods: {
-    onRemove(file, fileList) {
-      // fileList 是最新的图片列表集合
-      this.fileList = fileList;
-      console.log("onRemove", fileList);
+    onSuccess(res) {
+      console.log(res);
+    },
+    onRemove() {
+      console.log("onRemove");
     },
     onPreview(file) {
       console.log(file);
@@ -81,23 +59,13 @@ export default {
       // file 是对象（处理了，包含了文件上传的状态、原生的文件信息等）
       // 文件状态改变时的钩子，添加文件、上传成功或上传失败时都会被调用
       console.log(JSON.stringify(file));
-      console.log(fileList);
-      this.fileList = fileList;
     },
     beforeUpload(file) {
       // 这里一般做 体积的判断、类型的校验
       // file 是原生的文件信息
       console.log("beforeUpload", file);
       // return false;
-      // return Promise.reject("取消");
-      return true;
-    },
-    async httpRequest({ file }) {
-      console.log("我自己去上传");
-      let fd = new FormData();
-      fd.append("file", file);
-      let { data } = await uploadImage(fd);
-      console.log(data);
+      return Promise.reject("取消");
     },
   },
 };
@@ -111,11 +79,6 @@ export default {
   &-text {
     font-size: 30px;
     line-height: 46px;
-  }
-}
-::v-deep .hidden {
-  div.el-upload {
-    display: none;
   }
 }
 </style>
