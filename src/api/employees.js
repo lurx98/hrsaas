@@ -101,3 +101,12 @@ export function updateJob(data) {
     data
   })
 }
+
+// 封装用户关联角色
+export const  assignRoleApi = data=>{
+  return request({
+    url: `/sys/user/assignRoles`,
+    method: 'put',
+    data
+  }) 
+}

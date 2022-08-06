@@ -45,3 +45,13 @@ export const getCompanyInfoApi = id =>{
         method:'GET'
     })
 }
+
+
+// 给角色授权
+export const assignAuthApi = data=>{
+    return request({
+        url:'/sys/role/assignPrem',
+        method:'put',
+        data
+    })
+}

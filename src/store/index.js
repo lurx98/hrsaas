@@ -6,6 +6,7 @@ import getters from './getters'
 // import app from './modules/app'
 // import settings from './modules/settings'
 // import user from './modules/user'
+// import user from './modules/permission'
 
 const req = require.context('./modules', false, /\.js$/)
 const keyArr = req.keys().map(item => item.split('./')[1]).map(item => item.split('.js')[0])
@@ -25,7 +26,8 @@ const store = new Vuex.Store({
   // modules: {
   //   app,
   //   settings,
-  //   user
+  //   user,
+  //   permission
   // },
   modules
 

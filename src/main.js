@@ -1,28 +1,28 @@
-import Vue from 'vue'
+import Vue from "vue";
 // 基础样式包
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import "normalize.css/normalize.css"; // A modern alternative to CSS resets
 // 导入ElementUI
-import ElementUI from 'element-ui'
+import ElementUI from "element-ui";
 // 导入ElementUI的样式
-import 'element-ui/lib/theme-chalk/index.css'
+import "element-ui/lib/theme-chalk/index.css";
 // 导入ElementUI的语言包(英文)
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+import locale from "element-ui/lib/locale/lang/en"; // lang i18n
 // 导入全局样式
-import '@/styles/index.scss' // global css
+import "@/styles/index.scss"; // global css
 // 导入根组件
-import App from './App'
+import App from "./App";
 // 导入仓库
-import store from './store'
+import store from "./store";
 // 导入路由
-import router from './router'
+import router from "./router";
 // 导入图标
-import '@/icons' // icon
+import "@/icons"; // icon
 // 导入导航权限守卫
-import '@/permission' // permission control
-import '@/utils' // permission control
+import "@/permission"; // permission control
+import "@/utils"; // permission control
 // import '@/components'
-import Components from  '@/components'
-Vue.use(Components)
+import Components from "@/components";
+Vue.use(Components);
 /* 
 Vue.directive('指令名',{
   inserted(el,binding){
@@ -46,7 +46,7 @@ Vue.directive('指令名',{
 //   }
 // })
 // 读取某个模块里面所有暴露信息
-import * as directive from '@/directive'
+import * as directive from "@/directive";
 // console.log(directive);  // 对象
 // // -------------------------
 // let obj = { name:222,age:20 }
@@ -56,31 +56,34 @@ import * as directive from '@/directive'
 //   console.log('属性名是:'+key,'属性值是:'+ obj[key] );
 // })
 // --------批量注册自定义指令-----------------
-Object.keys(directive).forEach(key=>{
+Object.keys(directive).forEach((key) => {
   // Vue.directive(指令名,指令的配置对象)
   // 指令名就是 key   指令的配置对象就是  directive[key]
-  // console.log(key, directive[key]);  
-  Vue.directive(key,directive[key])
-})
+  // console.log(key, directive[key]);
+  Vue.directive(key, directive[key]);
+});
 // --------批量注册全局过滤器-----------------
 // 读取所有的暴露函数
-import * as filters  from '@/filters'
+import * as filters from "@/filters";
 // 批量注册过滤器
-Object.keys(filters).forEach(key=>{
+Object.keys(filters).forEach((key) => {
   // Vue.filter(过滤器名,函数)
-  Vue.filter(key,filters[key])
-})
+  Vue.filter(key, filters[key]);
+});
+// ----------注册全局混入-------------------------------
+import checkPermission from "@/mixins/checkPermission";
+Vue.mixin(checkPermission);
 // -----------------------------------------
 // 给element-ui设置英文语言包
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, { locale });
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 // 控制台版本的提示
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 // 实例化vue
 new Vue({
-  el: '#app',
+  el: "#app",
   router,
   store,
-  render: h => h(App)
-})
+  render: (h) => h(App),
+});

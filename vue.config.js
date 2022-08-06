@@ -36,7 +36,8 @@ module.exports = {
     proxy:{
       // 前端代码中   /api/box  ==> http://www.baiud.com/api/box
       '/api':{
-        target:'http://ihrm.itheima.net/',  // 要跨域访问的地址
+        // target:'http://ihrm.itheima.net/',  // 要跨域访问的地址
+        target:'http://192.168.19.134:3000/',  // 要跨域访问的地址
         changeOrigin:true, // 是否换源，要为true
         // pathRewrite:{   // 路径是否重写
         //   '^/api': ''  //  /api/box  ==> http://www.baiud.com/box

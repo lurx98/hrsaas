@@ -35,7 +35,8 @@ export default {
     ...mapGetters(["sidebar"]),
     routes() {
       // this.$router.options.routes 是我们项目的路由映射配置数组
-      return this.$router.options.routes;
+      // return this.$router.options.routes;
+      return this.$store.state.permission.routes;
     },
     activeMenu() {
       const route = this.$route;

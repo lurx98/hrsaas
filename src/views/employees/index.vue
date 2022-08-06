@@ -3,28 +3,16 @@
     <div class="app-container">
       <!-- 工具条 -->
       <page-tools :text="`共${total}条记录`">
-        <el-button size="small" type="danger" @click="expotToExcelHandler"
-          >普通excel导出</el-button
-        >
-        <el-button
-          size="small"
-          @click="expotToExcelFzHandler"
-          :disabled="checkList.length === 0"
-          type="info"
-          >选中数据复杂表头excel导出</el-button
-        >
-        <el-button
-          size="small"
-          type="success"
-          @click="$router.push('/import?type=user')"
-          >excel导入</el-button
-        >
-        <el-button
-          size="small"
-          type="primary"
-          @click="$refs.addEmployees.showDialog = true"
-          >新增员工</el-button
-        >
+        <el-button :disabled="!checkPermission('employees-export')" size="small" type="danger"
+          @click="expotToExcelHandler">
+          普通excel导出</el-button>
+        <el-button :disabled="!checkPermission('employees-export') && checkList.length === 0" size="small"
+          @click="expotToExcelFzHandler" type="info">
+          选中数据复杂表头excel导出</el-button>
+        <el-button :disabled="!checkPermission('employees-import')" size="small" type="success"
+          @click="$router.push('/import?type=user')">excel导入</el-button>
+        <el-button :disabled="!checkPermission('employees-add')" size="small" type="primary"
+          @click="$refs.addEmployees.showDialog = true">新增员工</el-button>
       </page-tools>
       <!-- 放置表格和分页 -->
       <el-card>
@@ -34,22 +22,12 @@
           <el-table-column prop="username" label="姓名" sortable="" />
           <el-table-column label="头像" sortable="">
             <template slot-scope="{ row }">
-              <img
-                v-imgerror="require('@/assets/common/bigUserHeader.png')"
-                style="height: 100px"
-                :src="row.staffPhoto"
-                alt=""
-                @click="imgClickHandler(row.staffPhoto)"
-              />
+              <img v-imgerror="require('@/assets/common/bigUserHeader.png')" style="height: 100px" :src="row.staffPhoto"
+                alt="" @click="imgClickHandler(row.staffPhoto)" />
             </template>
           </el-table-column>
           <el-table-column prop="workNumber" label="工号" sortable="" />
-          <el-table-column
-            prop="formOfEmployment"
-            :formatter="formatterFun"
-            label="聘用形式"
-            sortable=""
-          >
+          <el-table-column prop="formOfEmployment" :formatter="formatterFun" label="聘用形式" sortable="">
             <!-- <template slot-scope="{ row }">
               <span v-if="row.formOfEmployment * 1 === 1">正式</span>
               <span v-if="row.formOfEmployment * 1 === 2">非正式</span>
@@ -63,79 +41,67 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="$router.push('/employees/detail/' + scope.row.id)"
-                >查看</el-button
-              >
+              <el-button type="text" :disabled="!checkPermission('employees-edit')" size="small"
+                @click="$router.push('/employees/detail/' + scope.row.id)">查看
+              </el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
-              <el-button
-                type="text"
-                @click="delHandler(scope.row.id)"
-                size="small"
-                >删除</el-button
-              >
+              <el-button type="text" size="small" @click="assignRoleHandler(scope.row)">角色</el-button>
+              <el-button type="text" :disabled="!checkPermission('employees-del')" @click="delHandler(scope.row.id)"
+                size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页组件 -->
-        <el-row
-          type="flex"
-          justify="center"
-          align="middle"
-          style="height: 60px"
-        >
+        <el-row type="flex" justify="center" align="middle" style="height: 60px">
           <!-- 3个变量：每页数量、页码数、总数  -->
           <!-- 2个事件：页码切换事件、每页数量切换事件-->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="queryData.page"
-            :page-sizes="[3, 4, 5, 10]"
-            :page-size="queryData.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          >
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            :current-page="queryData.page" :page-sizes="[3, 4, 5, 10]" :page-size="queryData.size"
+            layout="total, sizes, prev, pager, next, jumper" :total="total">
           </el-pagination>
         </el-row>
       </el-card>
     </div>
+    <!--------------------------------------------------------添加员工 -->
     <AddEmployees @updateList="initData" ref="addEmployees" />
-    <!-- 弹框 -->
+    <!--------------------------------------------------------查看二维码弹框 -->
     <el-dialog title="查看二维码" :visible.sync="showDialog">
       <!-- 画布标签 -->
       <canvas ref="canvas"></canvas>
     </el-dialog>
+    <!--------------------------------------------------------关联角色 -->
+    <AssignRole ref="assignRole" />
   </div>
 </template>
 <script>
-import { getUserListApi, delUserApi } from "@/api/employees";
+import { getUserListApi, delUserApi, getUserInfoApi } from "@/api/employees";
 import EmplyeesConst from "@/api/constant/employees";
 import AddEmployees from "./components/add-employees.vue";
 import { formatDate } from "@/filters";
 import Qrcode from "qrcode";
+import AssignRole from "./components/assign-role.vue";
+import list from '@/mixins/list'
 export default {
-  components: { AddEmployees },
+  mixins: [list],
+  components: { AddEmployees, AssignRole },
   name: "Employees",
   data() {
     return {
-      list: [],
+      // list: [],
       queryData: {
-        page: 1,
+        // page: 1,
         size: 10,
       },
-      total: 0,
+      // total: 0,
       checkList: [],
       showDialog: false,
     };
   },
-  created() {
-    this.initData();
-  },
+  // created() {
+  //   this.initData();
+  // },
   methods: {
     async initData() {
       let { total, rows } = await getUserListApi(this.queryData);
@@ -155,12 +121,12 @@ export default {
       this.initData();
     },
     // 页码切换事件【列表功能】
-    handleCurrentChange(val) {
-      // val是最新的页码
-      console.log(`当前页: ${val}`);
-      this.queryData.page = val;
-      this.initData();
-    },
+    // handleCurrentChange(val) {
+    //   // val是最新的页码
+    //   console.log(`当前页: ${val}`);
+    //   this.queryData.page = val;
+    //   this.initData();
+    // },
     // 格式化函数
     formatterFun(row, column, cellValue, index) {
       // console.log(row, column, cellValue, index);
@@ -284,7 +250,18 @@ export default {
         });
       });
     },
+    // 找到该用户的详细信息
+    async assignRoleHandler(val) {
+      // 获取用户的信息
+      let res = await getUserInfoApi(val.id);
+      // 将用户的ID赋给绑定变量
+      this.$refs.assignRole.checkRoleList = res.roleIds;
+      this.$refs.assignRole.userId = val.id;
+      // 打开弹框
+      this.$refs.assignRole.showDialog = true;
+    },
   },
 };
 </script>
-<style></style>
+<style>
+</style>

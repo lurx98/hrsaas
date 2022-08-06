@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
+import Vue from "vue";
+import Router from "vue-router";
+Vue.use(Router);
 
 // 引入多个模块的规则
-import approvalsRouter from './modules/approvals'
-import departmentsRouter from './modules/departments'
-import employeesRouter from './modules/employees'
-import permissionsRouter from './modules/permissions'
-import attendancesRouter from './modules/attendances'
-import salarysRouter from './modules/salarys'
-import settingsRouter from './modules/settings'
-import socialsRouter from './modules/socials'
+import approvalsRouter from "./modules/approvals";
+import departmentsRouter from "./modules/departments";
+import employeesRouter from "./modules/employees";
+import permissionsRouter from "./modules/permissions";
+import attendancesRouter from "./modules/attendances";
+import salarysRouter from "./modules/salarys";
+import settingsRouter from "./modules/settings";
+import socialsRouter from "./modules/socials";
 
 // 动态路由
 export const asyncRoutes = [
@@ -21,12 +21,12 @@ export const asyncRoutes = [
   attendancesRouter,
   salarysRouter,
   settingsRouter,
-  socialsRouter
-]
+  socialsRouter,
+];
 
 /* Layout */
 // 导入布局组件
-import Layout from '@/layout'
+import Layout from "@/layout";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -54,57 +54,63 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
+    path: "/login",
+    component: () => import("@/views/login/index"),
+    hidden: true,
   },
 
   {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
+    path: "/404",
+    component: () => import("@/views/404"),
+    hidden: true,
   },
 
   {
-    path: '/',
+    path: "/",
     component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
+    redirect: "/dashboard",
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("@/views/dashboard/index"),
+        meta: { title: "Dashboard", icon: "dashboard" },
+      },
+    ],
   },
   {
-    path: '/import',
+    path: "/import",
     component: Layout,
     hidden: true, // 隐藏在左侧菜单中
-    children: [{
-      path: '', // 二级路由path什么都不写 表示二级默认路由
-      component: () => import('@/views/import')
-    }]
+    children: [
+      {
+        path: "", // 二级路由path什么都不写 表示二级默认路由
+        component: () => import("@/views/import"),
+      },
+    ],
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
+  // { path: '*', redirect: '/404', hidden: true }
+];
 // 创建一个路由实例，并返回
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes,...asyncRoutes]
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    // routes: [...constantRoutes,...asyncRoutes]
+    routes: [...constantRoutes], // 只有静态
+  });
 // 获取到路由实例
-const router = createRouter()
+const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 // 重置一个路由实例
 export function resetRouter() {
   // 创建一个新的路由实例
-  const newRouter = createRouter()
+  const newRouter = createRouter();
   // 将路由实例的matcher变成新的即可
-  router.matcher = newRouter.matcher // reset router
+  router.matcher = newRouter.matcher; // reset router
 }
 
-export default router
+export default router;
