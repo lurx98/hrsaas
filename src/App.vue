@@ -19,5 +19,9 @@ export default {
       //   "http://yun.itheima.com/Upload/Images/20220722/62da600e97fcf.jpg",
     };
   },
+  created() {
+    // console.log(this);
+    // this.$t('china')
+  }
 };
 </script>

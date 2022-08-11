@@ -1,16 +1,18 @@
 <template>
   <div class="navbar">
-    <hamburger
-      :is-active="sidebar.opened"
-      class="hamburger-container"
-      @toggleClick="toggleSideBar"
-    />
+    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <div class="app-breadcrumb">
       江苏传智播客教育科技股份有限公司
       <span class="breadBtn">体验版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
     <div class="right-menu">
+      <!-- 全屏插件 -->
+      <screen-full class="right-menu-item" />
+      <!-- 主题更换 -->
+      <theme-picker class="right-menu-item" />
+      <!-- 放置切换多语言 -->
+      <lang class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img src="@/assets/common/bigUserHeader.png" alt="" />
@@ -75,6 +77,7 @@ export default {
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   background-image: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
+
   .app-breadcrumb {
     display: inline-block;
     font-size: 18px;
@@ -82,6 +85,7 @@ export default {
     margin-left: 10px;
     color: #ffffff;
     cursor: text;
+
     .breadBtn {
       background: #84a9fe;
       font-size: 14px;
@@ -93,6 +97,7 @@ export default {
       margin-left: 15px;
     }
   }
+
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -125,7 +130,8 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
+      /*  修改为middle */
 
       &.hover-effect {
         cursor: pointer;
@@ -151,14 +157,17 @@ export default {
           border-radius: 15px;
           vertical-align: middle;
         }
+
         .name {
           color: #fff;
           vertical-align: middle;
           margin-left: 5px;
         }
+
         .user-dropdown {
           color: #fff;
         }
+
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;

@@ -72,7 +72,7 @@ export const constantRoutes = [
     children: [
       {
         path: "dashboard",
-        name: "Dashboard",
+        name: "dashboard",
         component: () => import("@/views/dashboard/index"),
         meta: { title: "Dashboard", icon: "dashboard" },
       },
@@ -96,7 +96,8 @@ export const constantRoutes = [
 // 创建一个路由实例，并返回
 const createRouter = () =>
   new Router({
-    // mode: 'history', // require service support
+    // mode: "history", // require service support
+    // base: "hr", // base选项仅限于mode是history模式
     scrollBehavior: () => ({ y: 0 }),
     // routes: [...constantRoutes,...asyncRoutes]
     routes: [...constantRoutes], // 只有静态

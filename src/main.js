@@ -3,10 +3,12 @@ import Vue from "vue";
 import "normalize.css/normalize.css"; // A modern alternative to CSS resets
 // 导入ElementUI
 import ElementUI from "element-ui";
+// 导入i18n实例
+import i18n from "@/lang";
 // 导入ElementUI的样式
 import "element-ui/lib/theme-chalk/index.css";
 // 导入ElementUI的语言包(英文)
-import locale from "element-ui/lib/locale/lang/en"; // lang i18n
+// import locale from "element-ui/lib/locale/lang/en"; // lang i18n
 // 导入全局样式
 import "@/styles/index.scss"; // global css
 // 导入根组件
@@ -23,6 +25,7 @@ import "@/utils"; // permission control
 // import '@/components'
 import Components from "@/components";
 Vue.use(Components);
+// #region
 /* 
 Vue.directive('指令名',{
   inserted(el,binding){
@@ -75,15 +78,42 @@ import checkPermission from "@/mixins/checkPermission";
 Vue.mixin(checkPermission);
 // -----------------------------------------
 // 给element-ui设置英文语言包
-Vue.use(ElementUI, { locale });
+// Vue.use(ElementUI, { locale });
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+// 配合i18n插件使用
+Vue.use(ElementUI, { i18n: (key, value) => i18n.t(key, value) });
+
 // 控制台版本的提示
+// #endregion
+// 启动mock服务器
+// const { mockXHR } = require("../mock");
+// mockXHR();
+
+// import axios from "axios";
+// axios({
+//   url: "/vue-admin-template/test",
+//   method: "post",
+//   data: {
+//     username: 111,
+//     password: 2222,
+//   },
+// }).then(({ data }) => {
+//   console.log(data);
+// });
+
+// axios({
+//   url: "/vue-admin-template/table/list",
+// }).then(({ data }) => {
+//   console.log(data, 111111111111);
+// });
+
 Vue.config.productionTip = false;
 // 实例化vue
 new Vue({
   el: "#app",
   router,
   store,
+  i18n,
   render: (h) => h(App),
 });

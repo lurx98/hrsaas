@@ -1,3 +1,11 @@
+# vue 项目体积优化哪些方式
+
+1. 使用cdn资源
+2. 进行文件的压缩
+3. 使用字体文件
+4. 部分不需要编译的资源放在public目录
+
+
 # vue-admin-template
 
 English | [简体中文](./README-zh.md)

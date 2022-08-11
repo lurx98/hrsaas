@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= webpackConfig.name %></title>
+    <!-- 相关资源通过 外链的形式给引入到我们的项目中来 -->
+    <!-- <script src="element-ui.js"></script>
+    <script src="echarts.js"></script>
+    <link rel="stylesheet" href="element-ui.css"> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <script src="https://unpkg.com/element-ui@2.15.9/lib/index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.9/lib/theme-chalk/index.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/xlsx/0.18.5/xlsx.mini.min.js"></script> -->
+    <!-- 引入样式 -->
+    <% for(var css of htmlWebpackPlugin.options.cdn.css) { %>
+      <link rel="stylesheet" href="<%=css%>">
+    <% } %>
+    <!-- 引入JS -->
+    <% for(var js of htmlWebpackPlugin.options.cdn.js) { %>
+      <script src="<%=js%>"></script>
+    <% } %>
   </head>
   <body>
     <noscript>
